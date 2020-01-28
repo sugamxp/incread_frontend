@@ -139,6 +139,10 @@ input::placeholder {
   font-size: 2vh;
   font-weight: 600;
 }
+
+.btn-general:focus {
+  outline: none;
+}
 .btn-white-sm {
   padding: 1.4vh 5.12vw;
 }

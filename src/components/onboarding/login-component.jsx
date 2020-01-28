@@ -6,7 +6,7 @@ import { SemipolarLoading } from "react-loadingg";
 import { Redirect } from "react-router-dom";
 import { withCookies } from "react-cookie";
 import { connect } from "react-redux";
-import { getArticlesPocket } from "../../actions/authActions";
+import { getArticlesPocket } from "../../redux/actions/authActions";
 
 class LoginComponent extends Component {
   state = {

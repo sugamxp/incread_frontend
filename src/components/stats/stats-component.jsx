@@ -92,15 +92,19 @@ class StatsComponent extends Component {
     return (
       <section>
         <div className="container-fluid">
-          <div className="main-container">
+          <div className="main-container-2">
             <div className="user-pocket">
-              <h1 className="main-title text-black">
+              <h1 className="user-title text-black">
                 {username}
                 <span className="float-right">
-                  <img src={pocket_logo} height="30px" width="32px" alt="" />
+                  <img
+                    src={pocket_logo}
+                    style={{ height: "3vh", position: "relative", top: "-1vh" }}
+                    alt=""
+                  />
                 </span>
               </h1>
-              <p className="main-title-content text-black">
+              <p className="rating-title text-dark-gray mt-10">
                 your Pocket consists of
               </p>
             </div>

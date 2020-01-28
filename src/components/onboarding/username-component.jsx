@@ -1,16 +1,15 @@
 import React, { Component } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import axios from "axios";
 import { withCookies } from "react-cookie";
 import { connect } from "react-redux";
-import { ThreeHorseLoading } from "react-loadingg";
+import { updateUserName } from "../../redux/actions/authActions";
 
 class UserNameComponent extends Component {
   state = {
     name: "",
     api_url: process.env.REACT_APP_API_URL,
-    token: this.props.cookies.get("token"),
-    username_update: 0
+    token: this.props.cookies.get("token")
   };
 
   onChange = (e) => {
@@ -18,23 +17,19 @@ class UserNameComponent extends Component {
   };
 
   onClick = (e) => {
-    axios
-      .post(
-        `${this.state.api_url}/users/${this.state.token}/update_username/`,
-        { username: this.state.name }
-      )
-      .then((res) => {
-        this.setState({ username_update: 1 });
-        console.log(res.data);
-      });
+    this.props.updateUserName(
+      this.state.api_url,
+      this.state.token,
+      this.state.name
+    );
   };
 
   render() {
-    if (this.state.username_update) {
+    if (this.props.username_update_success) {
       return <Redirect to="/stats" />;
     }
     return (
-      <section id="page-2">
+      <section>
         <div className="container-fluid">
           <div className="main-container">
             <p className="text-14-gray"></p>
@@ -61,15 +56,14 @@ class UserNameComponent extends Component {
             ) : null}
           </div>
         </div>
-        {/* <div class="illus-page-2" style={{ overflow: "hidden" }}>
-          <img src={username} alt="" />
-        </div> */}
       </section>
     );
   }
 }
 const mapStateToProps = (state) => ({
-  incread_articles_imported: state.auth.incread_articles_imported
+  username_update_success: state.auth.username_update_success
 });
 
-export default connect(mapStateToProps, null)(withCookies(UserNameComponent));
+export default connect(mapStateToProps, { updateUserName })(
+  withCookies(UserNameComponent)
+);
