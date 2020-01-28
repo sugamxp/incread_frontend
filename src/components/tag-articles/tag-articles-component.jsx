@@ -1,16 +1,19 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { withRouter } from "react-router-dom";
+import { withCookies } from "react-cookie";
+import { Redirect } from "react-router-dom";
+
 class TagArticlesComponent extends Component {
   state = {
-    user_id: 1,
     articles: [],
     cnt: 0,
-    progress_bar_width: 0
+    progress_bar_width: 0,
+    token: this.props.cookies.get("token")
   };
   componentDidMount() {
     axios
-      .get(`http://127.0.0.1:8000/users/${this.state.user_id}/tag_articles/`)
+      .get(`http://127.0.0.1:8000/users/${this.state.token}/tag_articles/`)
       .then((res) => {
         this.setState({ articles: res.data });
         console.log(res.data);
@@ -20,6 +23,8 @@ class TagArticlesComponent extends Component {
   handlePrioritySubmission = (data, e) => {
     e.preventDefault();
     let [priority, article] = data;
+    const cnt = this.state.cnt;
+    const max_cnt = this.state.articles.length;
     axios
       .post(
         `http://127.0.0.1:8000/users/userArticle/${article.id}/set_priority/`,
@@ -27,20 +32,23 @@ class TagArticlesComponent extends Component {
       )
       .then((res) => {
         console.log(res);
-        if (this.state.cnt === 6) {
-          this.props.history.push("/prioritize-list");
-        }
+        // if (cnt === max_cnt - 1) {
+        //   this.props.history.push("/prioritize-list");
+        // }
         this.setState({
           cnt: this.state.cnt + 1,
-          progress_bar_width: this.state.progress_bar_width + 100 / 7
+          progress_bar_width: this.state.progress_bar_width + 100 / max_cnt
         });
       });
   };
   render() {
+    if (this.state.cnt === this.state.articles.length - 1) {
+      return <Redirect to="/stats" />;
+    }
     if (this.state.articles.length !== 0) {
       const article = this.state.articles[this.state.cnt];
       return (
-        <section id="page-3">
+        <section>
           <div className="container-fluid bg-gray">
             <div className="main-article pb-40">
               <div className="main-container bg-gray">
@@ -50,7 +58,7 @@ class TagArticlesComponent extends Component {
                   <span className="plr-20">{article.time_to_read} min</span>
                 </div>
                 <p className="main-article-content text-dark-gray ptb-20">
-                  {article.excerpt.substring(0, 120)}...
+                  {article.excerpt.substring(0, 100)} ...
                 </p>
               </div>
             </div>
@@ -62,103 +70,54 @@ class TagArticlesComponent extends Component {
                   By reading this article, you expect to grow your actionable
                   knowledge
                 </p>
-                <div className="point-rating ptb-20">
-                  <div className="row ptb-15">
-                    <div className="col-2 position-relative">
-                      <div
-                        onClick={this.handlePrioritySubmission.bind(this, [
-                          5,
-                          article
-                        ])}
-                        className="rating-icon"
-                      >
-                        <div className="rating-marks text-gray">5</div>
+                <div className="point-rating ptb-40">
+                  <div className="d-flex flex-row">
+                    <div className="rating-icons mr-20">
+                      <div className="d-flex flex-column justify-content-between">
+                        {[5, 4, 3, 2, 1].map((priority, i) => (
+                          <div
+                            key={i}
+                            onClick={this.handlePrioritySubmission.bind(this, [
+                              priority,
+                              article
+                            ])}
+                            className="rating-icon"
+                          >
+                            <div className="rating-marks text-gray">
+                              {priority}
+                            </div>
+                          </div>
+                        ))}
                       </div>
                     </div>
-                    <div className="col pl-10">
-                      <p className="rating-title text-black">Significantly</p>
-                      <p className="rating-content text-black">
-                        Learning which you can apply soon
-                      </p>
-                      <p className="rating-subcontent text-gray">
-                        How-tos, Solutions to current problems
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="row ptb-15">
-                    <div className="col-2 position-relative">
-                      <div
-                        onClick={this.handlePrioritySubmission.bind(this, [
-                          4,
-                          article
-                        ])}
-                        className="rating-icon"
-                      >
-                        <div className="rating-marks text-gray">4</div>
+                    <div className="rating-contents flex-grow-1 d-flex flex-column justify-content-between">
+                      <div className="signi">
+                        <p className="rating-title text-black">Significantly</p>
+                        <p className="rating-content text-black">
+                          Learning which you can apply soon
+                        </p>
+                        <p className="rating-subcontent text-gray">
+                          How-tos, Solutions to current problems
+                        </p>
                       </div>
-                    </div>
-                    <div className="col pl-10"></div>
-                  </div>
-
-                  <div className="row ptb-15">
-                    <div className="col-2 position-relative">
-                      <div
-                        onClick={this.handlePrioritySubmission.bind(this, [
-                          3,
-                          article
-                        ])}
-                        className="rating-icon"
-                      >
-                        <div className="rating-marks text-gray">3</div>
+                      <div className="mod">
+                        <p className="rating-title text-black">Moderately</p>
+                        <p className="rating-content text-black">
+                          Learning which you’ll apply later
+                        </p>
+                        <p className="rating-subcontent text-gray">
+                          Cases, Situations you expect to be in someday
+                        </p>
                       </div>
-                    </div>
-                    <div className="col pl-10">
-                      <p className="rating-title text-black">Moderately</p>
-                      <p className="rating-content text-black">
-                        Learning which you’ll apply later
-                      </p>
-                      <p className="rating-subcontent text-gray">
-                        Cases, Situations you expect to be in someday
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="row ptb-15">
-                    <div className="col-2 position-relative">
-                      <div
-                        onClick={this.handlePrioritySubmission.bind(this, [
-                          2,
-                          article
-                        ])}
-                        className="rating-icon"
-                      >
-                        <div className="rating-marks text-gray">2</div>
+                      <div className="marg">
+                        <p className="rating-title text-black">Marginally</p>
+                        <p className="rating-content text-black">
+                          Learning which you might never apply
+                        </p>
+                        <p className="rating-subcontent text-gray">
+                          News, Things that won’t impact your life
+                        </p>
                       </div>
-                    </div>
-                    <div className="col pl-10"></div>
-                  </div>
-
-                  <div className="row ptb-15">
-                    <div className="col-2 position-relative">
-                      <div
-                        onClick={this.handlePrioritySubmission.bind(this, [
-                          1,
-                          article
-                        ])}
-                        className="rating-icon"
-                      >
-                        <div className="rating-marks text-gray">1</div>
-                      </div>
-                    </div>
-                    <div className="col pl-10">
-                      <p className="rating-title text-black">Marginally</p>
-                      <p className="rating-content text-black">
-                        Learning which you might never apply
-                      </p>
-                      <p className="rating-subcontent text-gray">
-                        News, Things that won’t impact your life
-                      </p>
                     </div>
                   </div>
                 </div>
@@ -182,4 +141,4 @@ class TagArticlesComponent extends Component {
     }
   }
 }
-export default withRouter(TagArticlesComponent);
+export default withCookies(withRouter(TagArticlesComponent));

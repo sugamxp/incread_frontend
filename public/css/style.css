@@ -295,6 +295,10 @@ input::placeholder {
   background: rgba(246, 166, 9, 0.1);
   border-radius: 4.33333px;
 }
+.rating-icon:active {
+  background: #f6a609;
+  color: #ffffff !important;
+}
 .rating-icons > div {
   height: 36vh;
 }
