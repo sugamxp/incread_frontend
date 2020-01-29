@@ -4,20 +4,31 @@ import { connect } from "react-redux";
 import { withCookies } from "react-cookie";
 import { getPrioritizedList } from "../../redux/actions/articlesActions";
 import { ArticleCardComponent } from "./article-card-component";
+import { withRouter } from "react-router-dom";
 
 class PrioritizeListComponent extends Component {
   componentDidMount() {
     const token = this.props.cookies.get("token");
     this.props.getPrioritizedList(token);
   }
+
+  navigateToArticle = (url, e) => {
+    window.open(url, "_self");
+  };
   render() {
-    const {
-      articles,
-      username,
-      untagged_articles
-    } = this.props.prioritized_list;
+    const saved_articles = JSON.parse(localStorage.getItem("articles"));
+    const { username, untagged_articles } = this.props.prioritized_list;
+
+    if (!saved_articles) {
+      var { articles } = this.props.prioritized_list;
+    } else {
+      articles = saved_articles;
+    }
 
     if (articles) {
+      if (!saved_articles) {
+        localStorage.setItem("articles", JSON.stringify(articles));
+      }
       return (
         <section>
           <div className="main-container-2">
@@ -38,7 +49,13 @@ class PrioritizeListComponent extends Component {
             </div>
             <div className="user-reading-list mt-20">
               {articles[0].map((article, i) => {
-                return <ArticleCardComponent key={i} {...article} />;
+                return (
+                  <ArticleCardComponent
+                    key={i}
+                    {...article}
+                    onClick={this.navigateToArticle.bind(this, article.url)}
+                  />
+                );
               })}
             </div>
           </div>
@@ -54,5 +71,6 @@ const mapStateToProps = (state) => ({
 });
 export default compose(
   connect(mapStateToProps, { getPrioritizedList }),
-  withCookies
+  withCookies,
+  withRouter
 )(PrioritizeListComponent);

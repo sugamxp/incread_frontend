@@ -1,17 +1,11 @@
 import React from "react";
 import article_img from "../../static/article_img.jpg";
 
-export const ArticleCardComponent = ({
-  title,
-  publisher,
-  ttr,
-  top_image_url,
-  ...rest
-}) => {
+export const ArticleCardComponent = (props) => {
   // console.log();
-
+  const { title, publisher, ttr, top_image_url, onClick, ...rest } = props;
   return (
-    <div className="row ptb-20 position-relative">
+    <div onClick={onClick} className="row ptb-20 position-relative">
       <div className="col-9 pr-16">
         <p className="rating-title text-black">{title}</p>
         <div className="mt-10 rating-content text-gray">
