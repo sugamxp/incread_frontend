@@ -1,11 +1,6 @@
 import React, { Component } from "react";
 import "./App.css";
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  withRouter
-} from "react-router-dom";
+import { Route, Switch, withRouter } from "react-router-dom";
 import { compose } from "redux";
 
 import StatsComponent from "./components/stats/stats-component";

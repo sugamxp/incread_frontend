@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import axios from "axios";
 import { withRouter } from "react-router-dom";
 import { withCookies } from "react-cookie";
-import { Redirect } from "react-router-dom";
 import { getArticlesToTag } from "../../redux/actions/articlesActions";
 import { compose } from "redux";
 import { connect } from "react-redux";
@@ -30,7 +29,7 @@ class TagArticlesComponent extends Component {
       )
       .then((res) => {
         // console.log(res);
-        
+
         if (cnt === max_cnt - 1) {
           this.props.history.push("/tagging-complete", { onboarding: true });
         } else {
