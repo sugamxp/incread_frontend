@@ -3,10 +3,11 @@ import login1 from "../../static/login1.svg";
 import login2 from "../../static/login2.svg";
 import axios from "axios";
 import { SemipolarLoading } from "react-loadingg";
-import { Redirect } from "react-router-dom";
+import { Redirect, withRouter } from "react-router-dom";
 import { withCookies } from "react-cookie";
 import { connect } from "react-redux";
 import { getArticlesPocket } from "../../redux/actions/authActions";
+import { compose } from "redux";
 
 class LoginComponent extends Component {
   state = {
@@ -41,7 +42,8 @@ class LoginComponent extends Component {
             this.props.api_url,
             res.data.access_token
           );
-          this.setState({ login_success: 1 });
+          // this.setState({ login_success: 1 });
+          this.props.history.push("/username");
         });
     }
   }
@@ -106,6 +108,8 @@ const mapStateToProps = (state) => ({
   api_url: state.auth.api_url
 });
 
-export default connect(mapStateToProps, { getArticlesPocket })(
-  withCookies(LoginComponent)
-);
+export default compose(
+  connect(mapStateToProps, { getArticlesPocket }),
+  withCookies,
+  withRouter
+)(LoginComponent);

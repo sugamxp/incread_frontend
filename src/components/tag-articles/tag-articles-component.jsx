@@ -21,31 +21,31 @@ class TagArticlesComponent extends Component {
     let [priority, article] = data;
     const cnt = this.state.cnt;
     const max_cnt = this.props.articles.length;
+    console.log(cnt, max_cnt);
+
     axios
       .post(
         `http://127.0.0.1:8000/users/userArticle/${article.id}/set_priority/`,
         { priority: priority }
       )
       .then((res) => {
-        this.setState({
-          cnt: cnt + 1,
-          progress_bar_width: this.state.progress_bar_width + 100 / max_cnt
-        });
+        // console.log(res);
+        
+        if (cnt === max_cnt - 1) {
+          this.props.history.push("/tagging-complete", { onboarding: true });
+        } else {
+          this.setState({
+            cnt: cnt + 1,
+            progress_bar_width: this.state.progress_bar_width + 100 / max_cnt
+          });
+        }
       });
   };
   render() {
-    if (this.state.cnt === this.props.articles.length - 1) {
-      return (
-        <Redirect
-          to={{
-            pathname: "/tagging-complete",
-            state: { onboarding: true }
-          }}
-        />
-      );
-    }
-    if (this.props.articles.length !== 0) {
-      const article = this.props.articles[this.state.cnt];
+    console.log(this.state.cnt);
+    const { articles } = this.props;
+    if (articles.length !== 0) {
+      const article = articles[this.state.cnt];
       return (
         <section>
           <div className="container-fluid bg-gray">

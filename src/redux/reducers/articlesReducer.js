@@ -1,7 +1,8 @@
 import { GET_ARTICLES_TO_TAG, TAGGING_COMPLETE } from "../actions/types";
 
 const initialState = {
-  articles_to_tag: []
+  articles_to_tag: [],
+  onboarding: false
 };
 
 export default function(state = initialState, action) {

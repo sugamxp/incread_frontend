@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
-import axios from "axios";
 import { withCookies } from "react-cookie";
+import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
+import { compose } from "redux";
 import { updateUserName } from "../../redux/actions/authActions";
 
 class UserNameComponent extends Component {
@@ -22,14 +22,10 @@ class UserNameComponent extends Component {
       this.state.token,
       this.state.name
     );
+    this.props.history.push("/stats", { username: this.state.name });
   };
 
   render() {
-    if (this.props.username_update_success) {
-      console.log(this.props.username_update_success);
-
-      return <Redirect to="/stats" />;
-    }
     return (
       <section>
         <div className="container-fluid">
@@ -62,10 +58,9 @@ class UserNameComponent extends Component {
     );
   }
 }
-const mapStateToProps = (state) => ({
-  username_update_success: state.auth.username_update_success
-});
 
-export default connect(mapStateToProps, { updateUserName })(
-  withCookies(UserNameComponent)
-);
+export default compose(
+  connect(null, { updateUserName }),
+  withCookies,
+  withRouter
+)(UserNameComponent);

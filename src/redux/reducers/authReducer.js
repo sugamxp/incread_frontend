@@ -3,7 +3,7 @@ import { GET_ARTICLES_POCKET, UPDATE_USERNAME } from "../actions/types";
 const initialState = {
   api_url: process.env.REACT_APP_API_URL,
   incread_articles_imported: 0,
-  username_update_success: 0
+  username: ""
 };
 
 export default function(state = initialState, action) {
@@ -17,7 +17,7 @@ export default function(state = initialState, action) {
     case UPDATE_USERNAME:
       return {
         ...state,
-        username_update_success: action.payload
+        username: action.payload
       };
     default:
       return state;

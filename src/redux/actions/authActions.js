@@ -15,7 +15,7 @@ export const getArticlesPocket = (api_url, token) => async (dispatch) => {
 export const updateUserName = (api_url, token, username) => async (
   dispatch
 ) => {
-  const res = await axios.post(`${api_url}/users/${token}/update_username/`, {
+  const res = await axios.post(`${api_url}/users/${token}/update_user/`, {
     username: username
   });
 

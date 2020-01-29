@@ -5,6 +5,8 @@ import axios from "axios";
 import { withCookies } from "react-cookie";
 import { ThreeHorseLoading } from "react-loadingg";
 import StatCardComponent from "./stat-card-component";
+import { compose } from "redux";
+import { connect } from "react-redux";
 
 class StatsComponent extends Component {
   state = {
@@ -32,6 +34,13 @@ class StatsComponent extends Component {
     return arr;
   };
 
+  componentDidUpdate(prevProps) {
+    if (this.state.username !== this.props.username && this.props.username) {
+      this.setState({
+        username: this.props.username
+      });
+    }
+  }
   componentDidMount() {
     axios
       .get(`${process.env.REACT_APP_API_URL}/users/${this.state.token}/stats/`)
@@ -59,6 +68,8 @@ class StatsComponent extends Component {
   }
 
   render() {
+    console.log(this.props.username);
+
     if (!this.state.get_stats) {
       return <ThreeHorseLoading />;
     }
@@ -88,6 +99,7 @@ class StatsComponent extends Component {
       } `
     ];
     stats = this.shuffle(stats);
+    console.log(this.props);
 
     return (
       <section>
@@ -143,4 +155,10 @@ class StatsComponent extends Component {
   }
 }
 
-export default withCookies(StatsComponent);
+const mapStateToProps = (state) => ({
+  username: state.auth.username
+});
+export default compose(
+  connect(mapStateToProps, null),
+  withCookies
+)(StatsComponent);
