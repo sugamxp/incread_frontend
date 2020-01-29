@@ -43,7 +43,14 @@ class TagArticlesComponent extends Component {
   };
   render() {
     if (this.state.cnt === this.state.articles.length - 1) {
-      return <Redirect to="/stats" />;
+      return (
+        <Redirect
+          to={{
+            pathname: "/tagging-complete",
+            state: { onboarding: true }
+          }}
+        />
+      );
     }
     if (this.state.articles.length !== 0) {
       const article = this.state.articles[this.state.cnt];

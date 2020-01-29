@@ -10,6 +10,7 @@ import ReadingCompleteComponent from "./components/reading-complete-component";
 import { CookiesProvider, withCookies } from "react-cookie";
 import { Provider } from "react-redux";
 import store from "./redux/store";
+import { TaggingCompleteComponent } from "./components/tagging-complete/tagging-complete-component";
 class App extends Component {
   render() {
     return (
@@ -34,6 +35,12 @@ class App extends Component {
                 exact
                 path="/reading-complete"
                 component={ReadingCompleteComponent}
+              />
+
+              <Route
+                exact
+                path="/tagging-complete"
+                component={TaggingCompleteComponent}
               />
             </Switch>
           </CookiesProvider>
