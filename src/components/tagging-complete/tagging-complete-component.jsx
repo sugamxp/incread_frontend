@@ -25,17 +25,11 @@ class TaggingCompleteComponent extends Component {
   handleTaggingComplete = (articles, e) => {
     const ids = [];
     articles.map((article) => ids.push(article.id));
-    const { api_url, token } = this.state;
-
-    this.props.taggingComplete(this.props.cookies.get("token"), ids);
-
-    axios
-      .post(`${api_url}/users/${token}/update_user/`, {
-        onboarding_complete: true
-      })
-      .then((res) => {
-        this.props.history.push("/prioritize-list");
-      });
+    this.props.taggingComplete(
+      this.props.cookies.get("token"),
+      ids,
+      this.props
+    );
   };
 
   render() {
