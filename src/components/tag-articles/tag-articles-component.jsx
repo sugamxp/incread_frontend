@@ -3,46 +3,38 @@ import axios from "axios";
 import { withRouter } from "react-router-dom";
 import { withCookies } from "react-cookie";
 import { Redirect } from "react-router-dom";
-
+import { getArticlesToTag } from "../../redux/actions/articlesActions";
+import { compose } from "redux";
+import { connect } from "react-redux";
 class TagArticlesComponent extends Component {
   state = {
-    articles: [],
     cnt: 0,
     progress_bar_width: 0,
     token: this.props.cookies.get("token")
   };
   componentDidMount() {
-    axios
-      .get(`http://127.0.0.1:8000/users/${this.state.token}/tag_articles/`)
-      .then((res) => {
-        this.setState({ articles: res.data });
-        console.log(res.data);
-      });
+    this.props.getArticlesToTag(this.state.token);
   }
 
   handlePrioritySubmission = (data, e) => {
     e.preventDefault();
     let [priority, article] = data;
     const cnt = this.state.cnt;
-    const max_cnt = this.state.articles.length;
+    const max_cnt = this.props.articles.length;
     axios
       .post(
         `http://127.0.0.1:8000/users/userArticle/${article.id}/set_priority/`,
         { priority: priority }
       )
       .then((res) => {
-        console.log(res);
-        // if (cnt === max_cnt - 1) {
-        //   this.props.history.push("/prioritize-list");
-        // }
         this.setState({
-          cnt: this.state.cnt + 1,
+          cnt: cnt + 1,
           progress_bar_width: this.state.progress_bar_width + 100 / max_cnt
         });
       });
   };
   render() {
-    if (this.state.cnt === this.state.articles.length - 1) {
+    if (this.state.cnt === this.props.articles.length - 1) {
       return (
         <Redirect
           to={{
@@ -52,8 +44,8 @@ class TagArticlesComponent extends Component {
         />
       );
     }
-    if (this.state.articles.length !== 0) {
-      const article = this.state.articles[this.state.cnt];
+    if (this.props.articles.length !== 0) {
+      const article = this.props.articles[this.state.cnt];
       return (
         <section>
           <div className="container-fluid bg-gray">
@@ -148,4 +140,13 @@ class TagArticlesComponent extends Component {
     }
   }
 }
-export default withCookies(withRouter(TagArticlesComponent));
+
+const mapStateToProps = (state) => ({
+  articles: state.articles.articles_to_tag
+});
+
+export default compose(
+  withCookies,
+  withRouter,
+  connect(mapStateToProps, { getArticlesToTag })
+)(TagArticlesComponent);

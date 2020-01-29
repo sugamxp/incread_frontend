@@ -4,7 +4,7 @@ import article_img from "../static/article_img.jpg";
 export default class PrioritizeListComponent extends Component {
   render() {
     return (
-      <section id="page-6">
+      <section>
         <div className="main-container-2">
           <div className="user-reading">
             <div className="row">
@@ -48,44 +48,6 @@ export default class PrioritizeListComponent extends Component {
                 <p className="green-overlay-content">
                   <i className="fa fa-check mr-10"></i>Done
                 </p>
-              </div>
-            </div>
-            <div className="row ptb-20">
-              <div className="col-9 pr-16">
-                <p className="rating-title text-black">
-                  Thoughts on Travis Kalanick
-                </p>
-                <div className="mt-10 rating-content text-gray">
-                  linkedin.com<span className="ml-10">2 min</span>
-                </div>
-              </div>
-              <div className="col-3">
-                <img
-                  src={article_img}
-                  width="80px"
-                  height="45px"
-                  alt=""
-                  className="float-right"
-                />
-              </div>
-            </div>
-            <div className="row ptb-20">
-              <div className="col-9 pr-16">
-                <p className="rating-title text-black">
-                  What is Jobs to be Done?
-                </p>
-                <div className="mt-10 rating-content text-gray">
-                  justinjackson.co<span className="ml-10">3 min</span>
-                </div>
-              </div>
-              <div className="col-3">
-                <img
-                  src={article_img}
-                  width="80px"
-                  height="45px"
-                  alt=""
-                  className="float-right"
-                />
               </div>
             </div>
           </div>

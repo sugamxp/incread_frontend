@@ -13,7 +13,7 @@ class LoginComponent extends Component {
     login_success: 0
   };
 
-  handleClick = (e) => {
+  handleLogin = (e) => {
     axios.post(`${this.props.api_url}/users/auth/`).then((res) => {
       console.log(res.data);
       localStorage.setItem("auth_page", "true");
@@ -23,6 +23,10 @@ class LoginComponent extends Component {
   };
 
   componentDidMount() {
+    const current = new Date();
+    const nextYear = new Date();
+    nextYear.setFullYear(current.getFullYear() + 1);
+
     const auth_page = localStorage.getItem("auth_page");
     if (auth_page === "true") {
       const data = { code: localStorage.getItem("client_id") };
@@ -30,7 +34,9 @@ class LoginComponent extends Component {
         .post(`${this.props.api_url}/users/get_access_token/`, data)
         .then((res) => {
           localStorage.clear();
-          this.props.cookies.set("token", res.data.access_token);
+          this.props.cookies.set("token", res.data.access_token, {
+            expires: nextYear
+          });
           this.props.getArticlesPocket(
             this.props.api_url,
             res.data.access_token
@@ -63,7 +69,7 @@ class LoginComponent extends Component {
             </div>
 
             <button
-              onClick={this.handleClick}
+              onClick={this.handleLogin}
               className="btn-general ptb-16 mt-30 btn-login text-dark-gray btn-bg animated fadeIn delay-2s"
             >
               <span className="pocket-svg">

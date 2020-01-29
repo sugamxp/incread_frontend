@@ -1,12 +1,24 @@
 import React from "react";
 import check from "../../static/check.svg";
 import { withRouter } from "react-router-dom";
+import { withCookies } from "react-cookie";
+import { connect } from "react-redux";
+import { compose } from "redux";
+import { taggingComplete } from "../../redux/actions/articlesActions";
 
-export const TaggingCompleteComponent = withRouter((props) => {
+const handleTaggingComplete = ([articles, props], e) => {
+  const ids = [];
+  articles.map((article) => ids.push(article.id));
+  console.log(ids);
+  props.taggingComplete(props.cookies.get("token"), ids);
+  props.history.replace("/prioritize-list");
+};
+
+const TaggingCompleteComponent = (props) => {
   let onboarding = props.location.state.onboarding;
   //   let onboarding = falses;
-  console.log(onboarding);
-
+  console.log(props);
+  const { articles } = props;
   return (
     <section>
       <div className="container-fluid">
@@ -22,7 +34,10 @@ export const TaggingCompleteComponent = withRouter((props) => {
             </p>
             {onboarding ? (
               <div>
-                <button className="btn-general btn-blue btn-bg mt-60">
+                <button
+                  onClick={handleTaggingComplete.bind(this, [articles, props])}
+                  className="btn-general btn-blue btn-bg mt-60"
+                >
                   Continue
                 </button>
               </div>
@@ -42,4 +57,13 @@ export const TaggingCompleteComponent = withRouter((props) => {
       </div>
     </section>
   );
+};
+const mapStateToProps = (state) => ({
+  articles: state.articles.articles_to_tag
 });
+
+export default compose(
+  connect(mapStateToProps, { taggingComplete }),
+  withRouter,
+  withCookies
+)(TaggingCompleteComponent);
