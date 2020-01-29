@@ -130,11 +130,11 @@ class StatsComponent extends Component {
               ))}
             </div>
             <div className="text-center mt-40">
-              <button className="btn-general btn-blue btn-bg">
-                <Link to="/tag-articles" style={{ color: "#fff" }}>
+              <Link to="/tag-articles" style={{ color: "#fff" }}>
+                <button className="btn-general btn-blue btn-bg">
                   Continue
-                </Link>
-              </button>
+                </button>
+              </Link>
             </div>
           </div>
         </div>

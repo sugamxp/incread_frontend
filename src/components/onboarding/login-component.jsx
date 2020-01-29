@@ -46,6 +46,9 @@ class LoginComponent extends Component {
     if (this.state.login_success === 1) {
       return <Redirect to="/username" />;
     }
+    if (auth_page) {
+      return <SemipolarLoading />;
+    }
     return (
       <section>
         <div className="container-fluid">
@@ -58,19 +61,16 @@ class LoginComponent extends Component {
                 Prioritised reading
               </p>
             </div>
-            {auth_page ? (
-              <SemipolarLoading />
-            ) : (
-              <button
-                onClick={this.handleClick}
-                className="btn-general ptb-16 mt-30 btn-login text-dark-gray btn-bg animated fadeIn delay-2s"
-              >
-                <span className="pocket-svg">
-                  <img src="img/pocket.svg" alt="" />{" "}
-                </span>
-                Login with Pocket
-              </button>
-            )}
+
+            <button
+              onClick={this.handleClick}
+              className="btn-general ptb-16 mt-30 btn-login text-dark-gray btn-bg animated fadeIn delay-2s"
+            >
+              <span className="pocket-svg">
+                <img src="img/pocket.svg" alt="" />{" "}
+              </span>
+              Login with Pocket
+            </button>
           </div>
         </div>
         <div className="illustrations">

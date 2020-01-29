@@ -26,6 +26,8 @@ class UserNameComponent extends Component {
 
   render() {
     if (this.props.username_update_success) {
+      console.log(this.props.username_update_success);
+
       return <Redirect to="/stats" />;
     }
     return (

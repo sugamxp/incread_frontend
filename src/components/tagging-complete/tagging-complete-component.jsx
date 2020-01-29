@@ -3,8 +3,8 @@ import check from "../../static/check.svg";
 import { withRouter } from "react-router-dom";
 
 export const TaggingCompleteComponent = withRouter((props) => {
-  //   let onboarding = props.location.state.onboarding;
-  let onboarding = false;
+  let onboarding = props.location.state.onboarding;
+  //   let onboarding = falses;
   console.log(onboarding);
 
   return (
