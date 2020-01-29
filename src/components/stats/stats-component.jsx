@@ -3,7 +3,7 @@ import pocket_logo from "../../static/pocket.svg";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { withCookies } from "react-cookie";
-import { ThreeHorseLoading } from "react-loadingg";
+import { SemipolarLoading } from "react-loadingg";
 import StatCardComponent from "./stat-card-component";
 import { compose } from "redux";
 import { connect } from "react-redux";
@@ -71,7 +71,7 @@ class StatsComponent extends Component {
     console.log(this.props.username);
 
     if (!this.state.get_stats) {
-      return <ThreeHorseLoading />;
+      return <SemipolarLoading />;
     }
 
     const {
