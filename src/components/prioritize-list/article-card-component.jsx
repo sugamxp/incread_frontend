@@ -8,13 +8,14 @@ export const ArticleCardComponent = (props) => {
     publisher,
     ttr,
     top_image_url,
-    onClick,
+    onArticleClick,
     read_status_incread,
+    onDoneClick,
     ...rest
   } = props;
   return (
     <div className="row ptb-20 position-relative">
-      <div onClick={onClick} className="col-9 pr-16">
+      <div onClick={onArticleClick} className="col-9 pr-16">
         <p className="rating-title text-black">{title}</p>
         <div className="mt-10 rating-content text-gray">
           {publisher}
@@ -38,9 +39,13 @@ export const ArticleCardComponent = (props) => {
           />
         )}
       </div>
-      {read_status_incread === "UNREAD" ? null : (
+      {read_status_incread ? (
         <div>
-          <p className="text-yellow mt-20 done" id="done1">
+          <p
+            onClick={onDoneClick}
+            className="text-yellow mt-20 done"
+            id="done1"
+          >
             Mark as Done
           </p>
           <div className="green-overlay">
@@ -50,7 +55,7 @@ export const ArticleCardComponent = (props) => {
             </p>
           </div>
         </div>
-      )}
+      ) : null}
     </div>
   );
 };

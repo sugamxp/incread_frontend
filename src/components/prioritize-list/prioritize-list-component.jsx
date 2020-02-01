@@ -6,6 +6,7 @@ import { getPrioritizedList } from "../../redux/actions/articlesActions";
 import { ArticleCardComponent } from "./article-card-component";
 import { withRouter } from "react-router-dom";
 import { Link } from "react-router-dom";
+import axios from "axios";
 class PrioritizeListComponent extends Component {
   componentDidMount() {
     const token = this.props.cookies.get("token");
@@ -16,24 +17,44 @@ class PrioritizeListComponent extends Component {
     const saved_articles = JSON.parse(localStorage.getItem("articles"))[0];
     const result = saved_articles.map((article, i) => {
       if (article.id === id) {
-        article.read_status_incread = "READING";
+        article.read_status_incread = true;
       }
       return article;
     });
-    console.log("Saved Articles", JSON.stringify(result));
     localStorage.setItem("articles", JSON.stringify([result]));
     window.open(url, "_self");
+  };
+
+  onDoneClick = (id, e) => {
+    const api_url = process.env.REACT_APP_API_URL;
+    const token = this.props.cookies.get("token");
+
+    const saved_articles = JSON.parse(localStorage.getItem("articles"))[0];
+    const result = saved_articles.filter((article) => article.id !== id);
+
+    axios
+      .post(`${api_url}/users/userArticle/${id}/article_read_status/`)
+      .then((res) => {
+        console.log(res);
+
+        localStorage.setItem("articles", JSON.stringify([result]));
+        this.forceUpdate();
+      });
   };
   render() {
     const saved_articles = JSON.parse(localStorage.getItem("articles"));
     const { username, untagged_articles } = this.props.prioritized_list;
 
+    console.log();
+
     if (!saved_articles) {
       var { articles } = this.props.prioritized_list;
+    } else if (!saved_articles[0].length) {
+      localStorage.removeItem("articles");
+      this.props.history.push("/reading-complete");
     } else {
       articles = saved_articles;
     }
-
     if (articles) {
       if (!saved_articles) {
         localStorage.setItem("articles", JSON.stringify(articles));
@@ -64,10 +85,11 @@ class PrioritizeListComponent extends Component {
                   <ArticleCardComponent
                     key={i}
                     {...article}
-                    onClick={this.navigateToArticle.bind(this, [
+                    onArticleClick={this.navigateToArticle.bind(this, [
                       article.url,
                       article.id
                     ])}
+                    onDoneClick={this.onDoneClick.bind(this, article.id)}
                   />
                 );
               })}

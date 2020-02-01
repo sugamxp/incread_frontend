@@ -40,6 +40,7 @@ export const taggingComplete = (token, articles_id, props) => async (
 export const getPrioritizedList = (token) => async (dispatch) => {
   const api_url = process.env.REACT_APP_API_URL;
   const res = await axios.get(`${api_url}/users/${token}/get_priority_list/`);
+  console.log("Prioritized List Received", res);
 
   dispatch({
     type: GET_PRIORITIZED_LIST,
