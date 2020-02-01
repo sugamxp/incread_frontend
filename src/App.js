@@ -8,7 +8,7 @@ import TagArticlesComponent from "./components/tag-articles/tag-articles-compone
 import LoginComponent from "./components/onboarding/login-component";
 import UserNameComponent from "./components/onboarding/username-component";
 import PrioritizeListComponent from "./components/prioritize-list/prioritize-list-component";
-import ReadingCompleteComponent from "./components/reading-complete-component";
+import ReadingCompleteComponent from "./components/reading-complete/reading-complete-component";
 import { CookiesProvider, withCookies } from "react-cookie";
 import { Provider } from "react-redux";
 import store from "./redux/store";

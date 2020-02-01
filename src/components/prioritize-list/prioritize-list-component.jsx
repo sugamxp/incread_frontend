@@ -12,7 +12,16 @@ class PrioritizeListComponent extends Component {
     this.props.getPrioritizedList(token);
   }
 
-  navigateToArticle = (url, e) => {
+  navigateToArticle = ([url, id], e) => {
+    const saved_articles = JSON.parse(localStorage.getItem("articles"))[0];
+    const result = saved_articles.map((article, i) => {
+      if (article.id === id) {
+        article.read_status_incread = "READING";
+      }
+      return article;
+    });
+    console.log("Saved Articles", JSON.stringify(result));
+    localStorage.setItem("articles", JSON.stringify([result]));
     window.open(url, "_self");
   };
   render() {
@@ -55,7 +64,10 @@ class PrioritizeListComponent extends Component {
                   <ArticleCardComponent
                     key={i}
                     {...article}
-                    onClick={this.navigateToArticle.bind(this, article.url)}
+                    onClick={this.navigateToArticle.bind(this, [
+                      article.url,
+                      article.id
+                    ])}
                   />
                 );
               })}

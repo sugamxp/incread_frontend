@@ -384,7 +384,7 @@ input::placeholder {
 .done {
   font-style: normal;
   font-weight: 600;
-  font-size: 2vh;
+  font-size: 1.9vh;
   line-height: 2.8vh;
 }
 .done:hover {

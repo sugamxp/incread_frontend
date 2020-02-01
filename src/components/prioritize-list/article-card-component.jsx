@@ -3,10 +3,18 @@ import article_img from "../../static/article_img.jpg";
 
 export const ArticleCardComponent = (props) => {
   // console.log();
-  const { title, publisher, ttr, top_image_url, onClick, ...rest } = props;
+  const {
+    title,
+    publisher,
+    ttr,
+    top_image_url,
+    onClick,
+    read_status_incread,
+    ...rest
+  } = props;
   return (
-    <div onClick={onClick} className="row ptb-20 position-relative">
-      <div className="col-9 pr-16">
+    <div className="row ptb-20 position-relative">
+      <div onClick={onClick} className="col-9 pr-16">
         <p className="rating-title text-black">{title}</p>
         <div className="mt-10 rating-content text-gray">
           {publisher}
@@ -30,14 +38,19 @@ export const ArticleCardComponent = (props) => {
           />
         )}
       </div>
-      {/* <p className="text-yellow mt-20 done" id="done1">
-        Mark as Done
-      </p>
-      <div className="green-overlay">
-        <p className="green-overlay-content">
-          <i className="fa fa-check mr-10"></i>Done
-        </p>
-      </div> */}
+      {read_status_incread === "UNREAD" ? null : (
+        <div>
+          <p className="text-yellow mt-20 done" id="done1">
+            Mark as Done
+          </p>
+          <div className="green-overlay">
+            <p className="green-overlay-content">
+              <i className="fa fa-check mr-10"></i>
+              Done
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
