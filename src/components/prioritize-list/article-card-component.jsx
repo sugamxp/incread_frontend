@@ -17,16 +17,14 @@ export const ArticleCardComponent = (props) => {
         {top_image_url ? (
           <img
             src={top_image_url}
-            width="80px"
-            height="45px"
+            style={{ width: "20vw", height: "7vh" }}
             alt={article_img}
             className="float-right"
           />
         ) : (
           <img
             src={article_img}
-            width="80px"
-            height="45px"
+            style={{ width: "20vw", height: "7vh" }}
             alt=""
             className="float-right"
           />

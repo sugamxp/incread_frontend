@@ -6,10 +6,12 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import { taggingComplete } from "../../redux/actions/articlesActions";
 import axios from "axios";
-
+import { Link } from "react-router-dom";
 class TaggingCompleteComponent extends Component {
   state = {
     onboarding_complete: true,
+    untagged_articles: 0,
+    percentage: 0,
     api_url: process.env.REACT_APP_API_URL,
     token: this.props.cookies.get("token")
   };
@@ -17,8 +19,12 @@ class TaggingCompleteComponent extends Component {
   async componentDidMount() {
     const { api_url, token } = this.state;
     const res = await axios.get(`${api_url}/users/${token}/`);
+    console.log(res);
+    const { onboarding_complete, untagged_articles, percentage } = res.data;
     this.setState({
-      onboarding_complete: res.data.onboarding_complete
+      onboarding_complete,
+      untagged_articles,
+      percentage
     });
   }
 
@@ -34,6 +40,7 @@ class TaggingCompleteComponent extends Component {
 
   render() {
     const articles = this.props.articles;
+    const { onboarding_complete, untagged_articles, percentage } = this.state;
     return (
       <section>
         <div className="container-fluid">
@@ -47,15 +54,21 @@ class TaggingCompleteComponent extends Component {
                 Your inputs are used to generate the prioritized reading list
                 for you
               </p>
-              {this.state.onboarding_complete ? (
+              {onboarding_complete ? (
                 <div>
                   <p className="main-article-title text-black mt-20 text-left">
-                    348 (72%) of the articles haven’t been tagged yet
+                    {untagged_articles} ({percentage}%) of the articles haven’t
+                    been tagged yet
                   </p>
-                  <button className="btn-general btn-blue btn-bg mt-60">
-                    Tag 7 more
-                  </button>
-                  <p className="text-blue rating-title mt-40">done for now</p>
+                  <Link to="/tag-articles">
+                    <button className="btn-general btn-blue btn-bg mt-60">
+                      Tag 7 more
+                    </button>
+                  </Link>
+
+                  <Link to="prioritize-list">
+                    <p className="text-blue rating-title mt-40">done for now</p>
+                  </Link>
                 </div>
               ) : (
                 <div>

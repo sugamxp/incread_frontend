@@ -5,7 +5,7 @@ import { withCookies } from "react-cookie";
 import { getPrioritizedList } from "../../redux/actions/articlesActions";
 import { ArticleCardComponent } from "./article-card-component";
 import { withRouter } from "react-router-dom";
-
+import { Link } from "react-router-dom";
 class PrioritizeListComponent extends Component {
   componentDidMount() {
     const token = this.props.cookies.get("token");
@@ -41,9 +41,11 @@ class PrioritizeListComponent extends Component {
                   </p>
                 </div>
                 <div className="col position-relative">
-                  <button className="btn-general btn-white btn-white-sm user-button-position float-right">
-                    + {untagged_articles} New
-                  </button>
+                  <Link to="/tag-articles">
+                    <button className="btn-general btn-white btn-white-sm user-button-position float-right">
+                      + {untagged_articles} New
+                    </button>
+                  </Link>
                 </div>
               </div>
             </div>
