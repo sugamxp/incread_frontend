@@ -124,7 +124,9 @@ class TagArticlesComponent extends Component {
                 <div
                   className="progress-bar"
                   role="progressbar"
-                  style={{ width: `${this.state.progress_bar_width}%` }}
+                  style={{
+                    width: `${this.state.progress_bar_width}%`
+                  }}
                   aria-valuenow="75"
                   aria-valuemin="0"
                   aria-valuemax="100"

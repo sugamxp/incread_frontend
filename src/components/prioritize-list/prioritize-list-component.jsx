@@ -7,6 +7,8 @@ import { ArticleCardComponent } from "./article-card-component";
 import { withRouter } from "react-router-dom";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import $ from "jquery";
+
 class PrioritizeListComponent extends Component {
   componentDidMount() {
     const token = this.props.cookies.get("token");
@@ -38,7 +40,17 @@ class PrioritizeListComponent extends Component {
         console.log(res);
 
         localStorage.setItem("articles", JSON.stringify([result]));
-        this.forceUpdate();
+
+        // $(`#${id}`).click(function() {
+        $(`#${id}`).removeClass("text-yellow");
+        $(`#${id}`).addClass("text-green");
+        $(`#${id}`).html('<i class="fa fa-check mr-10"></i>Done');
+        $(`#green-overlay${id}`).show(1500);
+        // });
+
+        setTimeout(() => {
+          this.forceUpdate();
+        }, 3000);
       });
   };
   render() {

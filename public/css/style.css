@@ -272,10 +272,10 @@ input::placeholder {
   font-weight: normal;
 }
 .main-article-content {
-  font-size: 2vh;
+  font-size: 1.7vh;
   font-weight: normal;
   padding: 2.7vh 0;
-  line-height: 4vh;
+  line-height: 3vh;
 }
 .container-rounded {
   background: #ffffff;
@@ -422,3 +422,8 @@ input::placeholder {
 .border-stats {
   border: 1px solid #f5f6fa;
 }
+
+/* .progress-bar {
+  position: relative;
+  bottom: 4vh;
+} */

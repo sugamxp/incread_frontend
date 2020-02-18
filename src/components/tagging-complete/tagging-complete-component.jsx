@@ -60,11 +60,15 @@ class TaggingCompleteComponent extends Component {
                     {untagged_articles} ({percentage}%) of the articles haven’t
                     been tagged yet
                   </p>
-                  <Link to="/tag-articles">
-                    <button className="btn-general btn-blue btn-bg mt-60">
-                      Tag 7 more
-                    </button>
-                  </Link>
+
+                  {/* <Link to="/tag-articles"> */}
+                  <button
+                    onClick={this.handleTaggingComplete.bind(this, articles)}
+                    className="btn-general btn-blue btn-bg mt-60"
+                  >
+                    Tag 7 more
+                  </button>
+                  {/* </Link> */}
 
                   <Link to="prioritize-list">
                     <p className="text-blue rating-title mt-40">done for now</p>

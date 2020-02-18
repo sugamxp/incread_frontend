@@ -4,6 +4,7 @@ import article_img from "../../static/article_img.jpg";
 export const ArticleCardComponent = (props) => {
   // console.log();
   const {
+    id,
     title,
     publisher,
     ttr,
@@ -41,14 +42,13 @@ export const ArticleCardComponent = (props) => {
       </div>
       {read_status_incread ? (
         <div>
-          <p
-            onClick={onDoneClick}
-            className="text-yellow mt-20 done"
-            id="done1"
-          >
+          <p onClick={onDoneClick} className="text-yellow mt-20 done" id={id}>
             Mark as Done
           </p>
-          <div className="green-overlay">
+          <div
+            id={`green-overlay${id}`}
+            className="green-overlay animated fadeIn"
+          >
             <p className="green-overlay-content">
               <i className="fa fa-check mr-10"></i>
               Done
