@@ -2,7 +2,10 @@ import React, { Component } from "react";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { withCookies } from "react-cookie";
-import { getPrioritizedList } from "../../redux/actions/articlesActions";
+import {
+  getPrioritizedList,
+  removeArticle
+} from "../../redux/actions/articlesActions";
 import { ArticleCardComponent } from "./article-card-component";
 import { withRouter } from "react-router-dom";
 import { Link } from "react-router-dom";
@@ -12,60 +15,50 @@ import $ from "jquery";
 class PrioritizeListComponent extends Component {
   componentDidMount() {
     const token = this.props.cookies.get("token");
-    this.props.getPrioritizedList(token);
+    this.props.getPrioritizedList(token, this.props);
   }
 
   navigateToArticle = ([url, id], e) => {
-    const saved_articles = JSON.parse(localStorage.getItem("articles"))[0];
+    const saved_articles = JSON.parse(localStorage.getItem("articles"));
     const result = saved_articles.map((article, i) => {
       if (article.id === id) {
         article.read_status_incread = true;
       }
       return article;
     });
-    localStorage.setItem("articles", JSON.stringify([result]));
+    localStorage.setItem("articles", JSON.stringify(result));
     window.open(url, "_self");
   };
 
   onDoneClick = (id, e) => {
     const api_url = process.env.REACT_APP_API_URL;
-    const token = this.props.cookies.get("token");
-
-    const saved_articles = JSON.parse(localStorage.getItem("articles"))[0];
+    const saved_articles = JSON.parse(localStorage.getItem("articles"));
     const result = saved_articles.filter((article) => article.id !== id);
 
-    console.log("***********onDoneClick**************");
+    this.props.removeArticle(id);
     axios
       .post(`${api_url}/users/userArticle/${id}/article_read_status/`)
       .then((res) => {
         console.log(res);
-
-        localStorage.setItem("articles", JSON.stringify([result]));
-
-        // $(`#${id}`).click(function() {
-        console.log("*******jQuery Begin********");
-
+        localStorage.setItem("articles", JSON.stringify(result));
         $(`#${id}`).removeClass("text-yellow");
         $(`#${id}`).addClass("text-green");
         $(`#${id}`).html('<i class="fa fa-check mr-10"></i>Done');
         $(`#green-overlay${id}`).show(1500);
-
-        // });
-
         setTimeout(() => {
           this.forceUpdate();
         }, 2000);
       });
   };
+
   render() {
     const saved_articles = JSON.parse(localStorage.getItem("articles"));
-    const { username, untagged_articles } = this.props.prioritized_list;
-
-    console.log();
+    const username = this.props.username;
+    const untagged_articles = this.props.untagged_articles;
 
     if (!saved_articles) {
-      var { articles } = this.props.prioritized_list;
-    } else if (!saved_articles[0].length) {
+      var articles = this.props.prioritized_list;
+    } else if (!saved_articles.length) {
       localStorage.removeItem("articles");
       this.props.history.push("/reading-complete");
     } else {
@@ -73,11 +66,8 @@ class PrioritizeListComponent extends Component {
     }
     if (articles) {
       if (!saved_articles) {
-        setTimeout(() => {
-          localStorage.setItem("articles", JSON.stringify(articles));
-        }, 3500);
+        localStorage.setItem("articles", JSON.stringify(articles));
       }
-      console.log(this.props.prioritized_list);
       return (
         <section>
           <div className="main-container-2">
@@ -99,7 +89,7 @@ class PrioritizeListComponent extends Component {
               </div>
             </div>
             <div className="user-reading-list mt-20">
-              {articles[0].map((article, i) => {
+              {articles.map((article, i) => {
                 return (
                   <ArticleCardComponent
                     key={article.id}
@@ -122,10 +112,12 @@ class PrioritizeListComponent extends Component {
   }
 }
 const mapStateToProps = (state) => ({
-  prioritized_list: state.articles.prioritized_list
+  prioritized_list: state.articles.prioritized_list,
+  username: state.articles.username,
+  untagged_articles: state.articles.untagged_articles
 });
 export default compose(
-  connect(mapStateToProps, { getPrioritizedList }),
+  connect(mapStateToProps, { getPrioritizedList, removeArticle }),
   withCookies,
   withRouter
 )(PrioritizeListComponent);

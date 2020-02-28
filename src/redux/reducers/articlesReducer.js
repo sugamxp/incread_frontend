@@ -8,6 +8,8 @@ import {
 const initialState = {
   articles_to_tag: [],
   prioritized_list: [],
+  username: "",
+  untagged_articles: "",
   onboarding: false
 };
 
@@ -27,12 +29,17 @@ export default function(state = initialState, action) {
     case GET_PRIORITIZED_LIST:
       return {
         ...state,
-        prioritized_list: action.payload
+        prioritized_list: action.payload.articles,
+        username: action.payload.username,
+        untagged_articles: action.payload.untagged_articles
       };
 
     case REMOVE_ARTICLE:
       return {
-        ...state
+        ...state,
+        prioritized_list: state.prioritized_list.filter(
+          (article) => article.id !== action.payload
+        )
       };
     default:
       return state;
