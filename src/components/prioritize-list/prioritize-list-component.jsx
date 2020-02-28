@@ -34,6 +34,7 @@ class PrioritizeListComponent extends Component {
     const saved_articles = JSON.parse(localStorage.getItem("articles"))[0];
     const result = saved_articles.filter((article) => article.id !== id);
 
+    console.log("***********onDoneClick**************");
     axios
       .post(`${api_url}/users/userArticle/${id}/article_read_status/`)
       .then((res) => {
@@ -42,15 +43,18 @@ class PrioritizeListComponent extends Component {
         localStorage.setItem("articles", JSON.stringify([result]));
 
         // $(`#${id}`).click(function() {
+        console.log("*******jQuery Begin********");
+
         $(`#${id}`).removeClass("text-yellow");
         $(`#${id}`).addClass("text-green");
         $(`#${id}`).html('<i class="fa fa-check mr-10"></i>Done');
         $(`#green-overlay${id}`).show(1500);
+
         // });
 
         setTimeout(() => {
           this.forceUpdate();
-        }, 3000);
+        }, 2000);
       });
   };
   render() {
@@ -69,8 +73,11 @@ class PrioritizeListComponent extends Component {
     }
     if (articles) {
       if (!saved_articles) {
-        localStorage.setItem("articles", JSON.stringify(articles));
+        setTimeout(() => {
+          localStorage.setItem("articles", JSON.stringify(articles));
+        }, 3500);
       }
+      console.log(this.props.prioritized_list);
       return (
         <section>
           <div className="main-container-2">
@@ -95,7 +102,7 @@ class PrioritizeListComponent extends Component {
               {articles[0].map((article, i) => {
                 return (
                   <ArticleCardComponent
-                    key={i}
+                    key={article.id}
                     {...article}
                     onArticleClick={this.navigateToArticle.bind(this, [
                       article.url,

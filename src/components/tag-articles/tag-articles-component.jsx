@@ -12,7 +12,25 @@ class TagArticlesComponent extends Component {
     token: this.props.cookies.get("token")
   };
   componentDidMount() {
-    this.props.getArticlesToTag(this.state.token);
+    const midnight = new Date();
+    midnight.setHours(23, 59, 59, 0);
+
+    let num_tag = 7;
+    if (!this.props.cookies.get("num_tag")) {
+      this.props.cookies.set("num_tag", num_tag, {
+        expires: midnight
+      });
+    } else {
+      num_tag = this.props.cookies.get("num_tag");
+
+      this.props.cookies.set("num_tag", parseInt(num_tag) + 7, {
+        expires: midnight
+      });
+
+      num_tag = parseInt(num_tag) + 7;
+    }
+
+    this.props.getArticlesToTag(this.state.token, num_tag);
   }
 
   handlePrioritySubmission = (data, e) => {
@@ -46,9 +64,9 @@ class TagArticlesComponent extends Component {
     if (articles.length !== 0) {
       const article = articles[this.state.cnt];
       return (
-        <section>
+        <section className="position-relative bg-gray">
           <div className="container-fluid bg-gray">
-            <div className="main-article pb-40">
+            <div className="main-article pb-70">
               <div className="main-container bg-gray">
                 <p className="main-article-title text-black">{article.title}</p>
                 <div className="text-14-gray ptb-8">
@@ -63,7 +81,7 @@ class TagArticlesComponent extends Component {
           </div>
           <div className="container-fluid container-rounded main-rating-outer">
             <div className="main-rating">
-              <div className="main-container pt-40">
+              <div className="main-container pt-40 pb-40">
                 <p className="main-article-title text-black">
                   By reading this article, you expect to grow your actionable
                   knowledge
@@ -120,19 +138,19 @@ class TagArticlesComponent extends Component {
                   </div>
                 </div>
               </div>
-              <div className="progress" style={{ height: "4px" }}>
-                <div
-                  className="progress-bar"
-                  role="progressbar"
-                  style={{
-                    width: `${this.state.progress_bar_width}%`
-                  }}
-                  aria-valuenow="75"
-                  aria-valuemin="0"
-                  aria-valuemax="100"
-                ></div>
-              </div>
             </div>
+          </div>
+          <div className="progress progress-position" style={{ height: "4px" }}>
+            <div
+              className="progress-bar"
+              role="progressbar"
+              style={{
+                width: `${this.state.progress_bar_width}%`
+              }}
+              aria-valuenow="75"
+              aria-valuemin="0"
+              aria-valuemax="100"
+            ></div>
           </div>
         </section>
       );

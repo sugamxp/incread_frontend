@@ -12,11 +12,18 @@ class TaggingCompleteComponent extends Component {
     onboarding_complete: true,
     untagged_articles: 0,
     percentage: 0,
+    num_tag: 0,
     api_url: process.env.REACT_APP_API_URL,
     token: this.props.cookies.get("token")
   };
 
   async componentDidMount() {
+    const midnight = new Date();
+    midnight.setHours(23, 59, 59, 0);
+
+    const num_tag = this.props.cookies.get("num_tag");
+    this.setState({ num_tag: parseInt(num_tag) + 7 });
+
     const { api_url, token } = this.state;
     const res = await axios.get(`${api_url}/users/${token}/`);
     console.log(res);
@@ -28,19 +35,27 @@ class TaggingCompleteComponent extends Component {
     });
   }
 
-  handleTaggingComplete = (articles, e) => {
+  handleTaggingComplete = (data, e) => {
     const ids = [];
+    const [articles, tag_more] = data;
     articles.map((article) => ids.push(article.id));
     this.props.taggingComplete(
       this.props.cookies.get("token"),
       ids,
-      this.props
+      this.props,
+      tag_more
     );
   };
 
   render() {
     const articles = this.props.articles;
-    const { onboarding_complete, untagged_articles, percentage } = this.state;
+    const {
+      onboarding_complete,
+      untagged_articles,
+      percentage,
+      num_tag
+    } = this.state;
+
     return (
       <section>
         <div className="container-fluid">
@@ -63,21 +78,35 @@ class TaggingCompleteComponent extends Component {
 
                   {/* <Link to="/tag-articles"> */}
                   <button
-                    onClick={this.handleTaggingComplete.bind(this, articles)}
+                    onClick={this.handleTaggingComplete.bind(this, [
+                      articles,
+                      true
+                    ])}
                     className="btn-general btn-blue btn-bg mt-60"
                   >
-                    Tag 7 more
+                    Tag{" "}
+                    {num_tag <= untagged_articles ? num_tag : untagged_articles}{" "}
+                    more
                   </button>
                   {/* </Link> */}
 
-                  <Link to="prioritize-list">
-                    <p className="text-blue rating-title mt-40">done for now</p>
-                  </Link>
+                  <p
+                    onClick={this.handleTaggingComplete.bind(this, [
+                      articles,
+                      false
+                    ])}
+                    className="text-blue rating-title mt-40"
+                  >
+                    done for now
+                  </p>
                 </div>
               ) : (
                 <div>
                   <button
-                    onClick={this.handleTaggingComplete.bind(this, articles)}
+                    onClick={this.handleTaggingComplete.bind(this, [
+                      articles,
+                      false
+                    ])}
                     className="btn-general btn-blue btn-bg mt-60"
                   >
                     Continue

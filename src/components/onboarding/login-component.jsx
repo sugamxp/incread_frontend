@@ -24,20 +24,29 @@ class LoginComponent extends Component {
   };
 
   componentDidMount() {
+    if (this.props.cookies.get("token")) {
+      this.props.history.push("/prioritize-list");
+    }
+
     const current = new Date();
     const nextYear = new Date();
     nextYear.setFullYear(current.getFullYear() + 1);
 
     const auth_page = localStorage.getItem("auth_page");
     if (auth_page === "true") {
-      const data = { code: localStorage.getItem("client_id") };
+      const data = {
+        code: localStorage.getItem("client_id"),
+        timezone_offset: new Date().getTimezoneOffset()
+      };
       axios
         .post(`${this.props.api_url}/users/get_access_token/`, data)
         .then((res) => {
           localStorage.clear();
+
           this.props.cookies.set("token", res.data.access_token, {
             expires: nextYear
           });
+
           this.props.getArticlesPocket(
             this.props.api_url,
             res.data.access_token
@@ -49,6 +58,12 @@ class LoginComponent extends Component {
   }
 
   render() {
+    // if (
+    //   this.props.cookies.get("token") &&
+    //   this.props.cookies.get("onboarding")
+    // ) {
+    //   this.props.history.push("/prioritize-list");
+    // }
     console.log(this.props.api_url);
     const auth_page = localStorage.getItem("auth_page");
     if (this.state.login_success === 1) {

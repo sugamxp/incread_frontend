@@ -64,6 +64,10 @@ section {
   padding-bottom: 5.32vh;
 }
 
+.pb-70 {
+  padding-bottom: 9.32vh;
+}
+
 .ptb-40 {
   padding: 5.32vh 0;
 }
@@ -126,6 +130,10 @@ input[type="text"] {
 }
 input::placeholder {
   color: #95989a;
+}
+
+input {
+  outline: none;
 }
 /***********************************************************
                       GENERAL BUTTONS
@@ -283,8 +291,8 @@ input::placeholder {
   border-radius: 32px 32px 0px 0px;
 }
 .main-rating-outer {
-  position: relative;
-  top: -5.4vh;
+  position: absolute;
+  bottom: -1.5vh;
 }
 .rating-icon {
   /*    margin-right: 19px;*/
@@ -423,7 +431,9 @@ input::placeholder {
   border: 1px solid #f5f6fa;
 }
 
-/* .progress-bar {
-  position: relative;
+.progress-position {
+  position: absolute;
   bottom: 4vh;
-} */
+  left: 0;
+  right: 0;
+}

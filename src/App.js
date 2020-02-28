@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./App.css";
-import { Route, Switch, withRouter } from "react-router-dom";
+import { Route, Switch, withRouter, Redirect } from "react-router-dom";
 import { compose } from "redux";
 
 import StatsComponent from "./components/stats/stats-component";
@@ -39,6 +39,20 @@ class App extends Component {
       }
     });
   }
+
+  PrivateRoute = ({ component: Component, ...rest }) => (
+    <Route
+      {...rest}
+      render={(props) =>
+        this.props.cookies.get("token") ? (
+          <Component {...props} />
+        ) : (
+          <Redirect to="/" />
+        )
+      }
+    />
+  );
+
   render() {
     return (
       <Provider store={store}>
@@ -57,16 +71,17 @@ class App extends Component {
               path="/prioritize-list"
               component={PrioritizeListComponent}
             />
-            <Route
-              exact
-              path="/reading-complete"
-              component={ReadingCompleteComponent}
-            />
 
             <Route
               exact
               path="/tagging-complete"
               component={TaggingCompleteComponent}
+            />
+
+            <Route
+              exact
+              path="/reading-complete"
+              component={ReadingCompleteComponent}
             />
           </Switch>
         </CookiesProvider>

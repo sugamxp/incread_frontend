@@ -14,6 +14,9 @@ export const ArticleCardComponent = (props) => {
     onDoneClick,
     ...rest
   } = props;
+
+  console.log(id, top_image_url);
+
   return (
     <div className="row ptb-20 position-relative">
       <div onClick={onArticleClick} className="col-9 pr-16">
@@ -45,10 +48,7 @@ export const ArticleCardComponent = (props) => {
           <p onClick={onDoneClick} className="text-yellow mt-20 done" id={id}>
             Mark as Done
           </p>
-          <div
-            id={`green-overlay${id}`}
-            className="green-overlay animated fadeIn"
-          >
+          <div id={`green-overlay${id}`} className="green-overlay">
             <p className="green-overlay-content">
               <i className="fa fa-check mr-10"></i>
               Done
