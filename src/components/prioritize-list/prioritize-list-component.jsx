@@ -6,16 +6,20 @@ import {
   getPrioritizedList,
   removeArticle
 } from "../../redux/actions/articlesActions";
+
 import { ArticleCardComponent } from "./article-card-component";
 import { withRouter } from "react-router-dom";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import $ from "jquery";
+import { getArticlesPocket } from "../../redux/actions/authActions";
 
 class PrioritizeListComponent extends Component {
   componentDidMount() {
     const token = this.props.cookies.get("token");
+    const api_url = process.env.REACT_APP_API_URL;
     this.props.getPrioritizedList(token, this.props);
+    this.props.getArticlesPocket(api_url, token);
   }
 
   navigateToArticle = ([url, id], e) => {
@@ -117,7 +121,11 @@ const mapStateToProps = (state) => ({
   untagged_articles: state.articles.untagged_articles
 });
 export default compose(
-  connect(mapStateToProps, { getPrioritizedList, removeArticle }),
+  connect(mapStateToProps, {
+    getPrioritizedList,
+    removeArticle,
+    getArticlesPocket
+  }),
   withCookies,
   withRouter
 )(PrioritizeListComponent);
