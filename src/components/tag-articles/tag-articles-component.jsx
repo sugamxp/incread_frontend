@@ -39,12 +39,12 @@ class TagArticlesComponent extends Component {
     const cnt = this.state.cnt;
     const max_cnt = this.props.articles.length;
     console.log(cnt, max_cnt);
+    const api_url = process.env.REACT_APP_API_URL;
 
     axios
-      .post(
-        `http://127.0.0.1:8000/users/userArticle/${article.id}/set_priority/`,
-        { priority: priority }
-      )
+      .post(`${api_url}/users/userArticle/${article.id}/set_priority/`, {
+        priority: priority
+      })
       .then((res) => {
         // console.log(res);
 
