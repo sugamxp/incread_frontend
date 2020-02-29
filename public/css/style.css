@@ -274,6 +274,14 @@ input {
 .bg-gray {
   background-color: #f5f6fa;
 }
+
+.bg-yellow {
+  background-color: #f6a609 !important;
+}
+.color-white {
+  color: #fff !important;
+}
+
 .main-article-title {
   font-size: 2.2vh;
   line-height: 3.2vh;
@@ -305,6 +313,8 @@ input {
 }
 .rating-icon:active {
   background: #f6a609;
+}
+.rating-icon:active > div {
   color: #ffffff !important;
 }
 .rating-icons > div {

@@ -3,7 +3,7 @@ export const UPDATE_USERNAME = "UPDATE_USERNAME";
 export const GET_ARTICLES_TO_TAG = "GET_ARTICLES_TO_TAG";
 export const TAGGING_COMPLETE = "TAGGING_COMPLETE";
 export const GET_PRIORITIZED_LIST = "GET_PRIORITIZED_LIST";
-export const REMOVE_ARTICLE = "REMOVE_ARTICLE";
+export const REMOVE_ARTICLES = "REMOVE_ARTICLES";
 
 // $(document).ready(function(){
 

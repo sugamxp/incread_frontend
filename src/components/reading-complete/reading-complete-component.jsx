@@ -1,9 +1,12 @@
 import React, { Component } from "react";
 import { compose } from "redux";
+import { connect } from "react-redux";
+
 import { withCookies } from "react-cookie";
 import { withRouter } from "react-router-dom";
 import reading_complete from "../../static/reading_complete.svg";
 import axios from "axios";
+import { removeArticles } from "../../redux/actions/articlesActions";
 
 class ReadingCompleteComponent extends Component {
   state = {
@@ -16,7 +19,7 @@ class ReadingCompleteComponent extends Component {
   componentDidMount() {
     const api_url = process.env.REACT_APP_API_URL;
     const token = this.props.cookies.get("token");
-
+    this.props.removeArticles();
     axios.post(`${api_url}/users/${token}/get_completed_stats/`).then((res) => {
       const {
         username,
@@ -102,4 +105,10 @@ class ReadingCompleteComponent extends Component {
   }
 }
 
-export default compose(withCookies, withRouter)(ReadingCompleteComponent);
+export default compose(
+  connect(null, {
+    removeArticles
+  }),
+  withCookies,
+  withRouter
+)(ReadingCompleteComponent);

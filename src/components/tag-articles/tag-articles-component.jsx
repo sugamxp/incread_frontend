@@ -12,6 +12,8 @@ class TagArticlesComponent extends Component {
     token: this.props.cookies.get("token")
   };
   componentDidMount() {
+    console.log("componentDidMount");
+
     const midnight = new Date();
     midnight.setHours(23, 59, 59, 0);
 
@@ -22,11 +24,9 @@ class TagArticlesComponent extends Component {
       });
     } else {
       num_tag = this.props.cookies.get("num_tag");
-
       this.props.cookies.set("num_tag", parseInt(num_tag) + 7, {
         expires: midnight
       });
-
       num_tag = parseInt(num_tag) + 7;
     }
 
@@ -39,6 +39,26 @@ class TagArticlesComponent extends Component {
     const cnt = this.state.cnt;
     const max_cnt = this.props.articles.length;
     const api_url = process.env.REACT_APP_API_URL;
+    let rating = null;
+
+    if (e.target.classList.contains("signi")) {
+      rating = document.getElementById("rating-5");
+    } else if (e.target.classList.contains("mod")) {
+      rating = document.getElementById("rating-3");
+    } else if (e.target.classList.contains("marg")) {
+      rating = document.getElementById("rating-1");
+    }
+
+    if (rating) {
+      rating.firstChild.classList.remove("text-gray");
+      rating.firstChild.classList.add("color-white");
+      rating.classList.add("bg-yellow");
+      setTimeout(() => {
+        rating.firstChild.classList.add("text-gray");
+        rating.firstChild.classList.remove("color-white");
+        rating.classList.remove("bg-yellow");
+      }, 200);
+    }
 
     axios
       .post(`${api_url}/users/userArticle/${article.id}/set_priority/`, {
@@ -56,6 +76,8 @@ class TagArticlesComponent extends Component {
       });
   };
   render() {
+    console.log("render");
+
     const { articles } = this.props;
     if (articles.length !== 0) {
       const article = articles[this.state.cnt];
@@ -93,6 +115,7 @@ class TagArticlesComponent extends Component {
                               priority,
                               article
                             ])}
+                            id={`rating-${priority}`}
                             className="rating-icon"
                           >
                             <div className="rating-marks text-gray">
@@ -103,30 +126,54 @@ class TagArticlesComponent extends Component {
                       </div>
                     </div>
                     <div className="rating-contents flex-grow-1 d-flex flex-column justify-content-between">
-                      <div className="signi">
-                        <p className="rating-title text-black">Significantly</p>
-                        <p className="rating-content text-black">
+                      <div
+                        className="signi"
+                        onClick={this.handlePrioritySubmission.bind(this, [
+                          5,
+                          article
+                        ])}
+                      >
+                        <p className="rating-title text-black signi">
+                          Significantly
+                        </p>
+                        <p className="rating-content text-black signi">
                           Learning which you can apply soon
                         </p>
-                        <p className="rating-subcontent text-gray">
+                        <p className="rating-subcontent text-gray signi">
                           How-tos, Solutions to current problems
                         </p>
                       </div>
-                      <div className="mod">
-                        <p className="rating-title text-black">Moderately</p>
-                        <p className="rating-content text-black">
+                      <div
+                        className="mod"
+                        onClick={this.handlePrioritySubmission.bind(this, [
+                          3,
+                          article
+                        ])}
+                      >
+                        <p className="rating-title text-black mod">
+                          Moderately
+                        </p>
+                        <p className="rating-content text-black mod">
                           Learning which you’ll apply later
                         </p>
-                        <p className="rating-subcontent text-gray">
+                        <p className="rating-subcontent text-gray mod">
                           Cases, Situations you expect to be in someday
                         </p>
                       </div>
-                      <div className="marg">
-                        <p className="rating-title text-black">Marginally</p>
-                        <p className="rating-content text-black">
+                      <div
+                        className="marg"
+                        onClick={this.handlePrioritySubmission.bind(this, [
+                          1,
+                          article
+                        ])}
+                      >
+                        <p className="rating-title text-black marg">
+                          Marginally
+                        </p>
+                        <p className="rating-content text-black marg">
                           Learning which you might never apply
                         </p>
-                        <p className="rating-subcontent text-gray">
+                        <p className="rating-subcontent text-gray marg">
                           News, Things that won’t impact your life
                         </p>
                       </div>

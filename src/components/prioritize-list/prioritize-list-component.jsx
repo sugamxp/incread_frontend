@@ -2,10 +2,7 @@ import React, { Component } from "react";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { withCookies } from "react-cookie";
-import {
-  getPrioritizedList,
-  removeArticle
-} from "../../redux/actions/articlesActions";
+import { getPrioritizedList } from "../../redux/actions/articlesActions";
 
 import { ArticleCardComponent } from "./article-card-component";
 import { withRouter } from "react-router-dom";
@@ -17,8 +14,6 @@ import { getArticlesPocket } from "../../redux/actions/authActions";
 class PrioritizeListComponent extends Component {
   componentDidMount() {
     const token = this.props.cookies.get("token");
-    const api_url = process.env.REACT_APP_API_URL;
-    const saved_articles = JSON.parse(localStorage.getItem("articles"));
     this.props.getPrioritizedList(token, this.props);
   }
 
@@ -39,7 +34,6 @@ class PrioritizeListComponent extends Component {
     const saved_articles = JSON.parse(localStorage.getItem("articles"));
     const result = saved_articles.filter((article) => article.id !== id);
 
-    this.props.removeArticle(id);
     axios
       .post(`${api_url}/users/userArticle/${id}/article_read_status/`)
       .then((res) => {
@@ -134,7 +128,6 @@ const mapStateToProps = (state) => ({
 export default compose(
   connect(mapStateToProps, {
     getPrioritizedList,
-    removeArticle,
     getArticlesPocket
   }),
   withCookies,

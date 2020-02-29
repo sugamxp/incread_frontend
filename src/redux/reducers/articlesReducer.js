@@ -2,7 +2,7 @@ import {
   GET_ARTICLES_TO_TAG,
   TAGGING_COMPLETE,
   GET_PRIORITIZED_LIST,
-  REMOVE_ARTICLE
+  REMOVE_ARTICLES
 } from "../actions/types";
 
 const initialState = {
@@ -18,7 +18,10 @@ export default function(state = initialState, action) {
     case GET_ARTICLES_TO_TAG:
       return {
         ...state,
-        articles_to_tag: action.payload
+        articles_to_tag:
+          state.articles_to_tag.length !== 0
+            ? state.articles_to_tag
+            : action.payload
       };
 
     case TAGGING_COMPLETE:
@@ -37,12 +40,11 @@ export default function(state = initialState, action) {
         untagged_articles: action.payload.untagged_articles
       };
 
-    case REMOVE_ARTICLE:
+    //Empty the complete state
+    case REMOVE_ARTICLES:
       return {
         ...state,
-        prioritized_list: state.prioritized_list.filter(
-          (article) => article.id !== action.payload
-        )
+        prioritized_list: []
       };
     default:
       return state;

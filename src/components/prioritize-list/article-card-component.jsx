@@ -24,7 +24,7 @@ export const ArticleCardComponent = (props) => {
           {ttr ? <span className="ml-10">{ttr} min</span> : null}
         </div>
       </div>
-      <div className="col-3">
+      <div onClick={onArticleClick} className="col-3">
         {top_image_url ? (
           <img
             src={top_image_url}
