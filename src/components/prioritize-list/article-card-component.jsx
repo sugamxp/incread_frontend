@@ -15,8 +15,6 @@ export const ArticleCardComponent = (props) => {
     ...rest
   } = props;
 
-  console.log(id, top_image_url);
-
   return (
     <div className="row ptb-20 position-relative">
       <div onClick={onArticleClick} className="col-9 pr-16">

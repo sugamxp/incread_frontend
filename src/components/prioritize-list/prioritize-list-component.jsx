@@ -18,8 +18,8 @@ class PrioritizeListComponent extends Component {
   componentDidMount() {
     const token = this.props.cookies.get("token");
     const api_url = process.env.REACT_APP_API_URL;
+    const saved_articles = JSON.parse(localStorage.getItem("articles"));
     this.props.getPrioritizedList(token, this.props);
-    this.props.getArticlesPocket(api_url, token);
   }
 
   navigateToArticle = ([url, id], e) => {
@@ -43,14 +43,20 @@ class PrioritizeListComponent extends Component {
     axios
       .post(`${api_url}/users/userArticle/${id}/article_read_status/`)
       .then((res) => {
-        console.log(res);
         localStorage.setItem("articles", JSON.stringify(result));
         $(`#${id}`).removeClass("text-yellow");
         $(`#${id}`).addClass("text-green");
         $(`#${id}`).html('<i class="fa fa-check mr-10"></i>Done');
         $(`#green-overlay${id}`).show(1500);
+        console.log(result);
+
         setTimeout(() => {
-          this.forceUpdate();
+          if (result.length === 0) {
+            localStorage.removeItem("articles");
+            this.props.history.push("/reading-complete");
+          } else {
+            this.forceUpdate();
+          }
         }, 2000);
       });
   };
@@ -63,12 +69,17 @@ class PrioritizeListComponent extends Component {
     if (!saved_articles) {
       var articles = this.props.prioritized_list;
     } else if (!saved_articles.length) {
+      console.log("!saved_articles.length");
+      console.log(saved_articles);
+
       localStorage.removeItem("articles");
       this.props.history.push("/reading-complete");
     } else {
       articles = saved_articles;
     }
-    if (articles) {
+    if (articles.length) {
+      console.log("Articles Render", articles);
+
       if (!saved_articles) {
         localStorage.setItem("articles", JSON.stringify(articles));
       }

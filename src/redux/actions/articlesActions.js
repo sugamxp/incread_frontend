@@ -48,6 +48,8 @@ export const getPrioritizedList = (token, props) => async (dispatch) => {
   const res = await axios.get(`${api_url}/users/${token}/get_priority_list/`);
   console.log("Prioritized List Received", res);
   if (!res.data.articles.length) {
+    console.log("==> Tag Articles");
+
     props.history.push("/tag-articles");
   }
   dispatch({

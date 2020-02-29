@@ -29,7 +29,10 @@ export default function(state = initialState, action) {
     case GET_PRIORITIZED_LIST:
       return {
         ...state,
-        prioritized_list: action.payload.articles,
+        prioritized_list:
+          state.prioritized_list.length !== 0
+            ? state.prioritized_list
+            : action.payload.articles,
         username: action.payload.username,
         untagged_articles: action.payload.untagged_articles
       };

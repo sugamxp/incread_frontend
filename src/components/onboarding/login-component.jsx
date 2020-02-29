@@ -16,7 +16,6 @@ class LoginComponent extends Component {
 
   handleLogin = (e) => {
     axios.post(`${this.props.api_url}/users/auth/`).then((res) => {
-      console.log(res.data);
       localStorage.setItem("auth_page", "true");
       localStorage.setItem("client_id", res.data.code);
       window.open(res.data.auth_page, "_top");
@@ -51,19 +50,12 @@ class LoginComponent extends Component {
             this.props.api_url,
             res.data.access_token
           );
-          // this.setState({ login_success: 1 });
           this.props.history.push("/username");
         });
     }
   }
 
   render() {
-    // if (
-    //   this.props.cookies.get("token") &&
-    //   this.props.cookies.get("onboarding")
-    // ) {
-    //   this.props.history.push("/prioritize-list");
-    // }
     console.log(this.props.api_url);
     const auth_page = localStorage.getItem("auth_page");
     if (this.state.login_success === 1) {
