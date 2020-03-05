@@ -21,8 +21,14 @@ class TaggingCompleteComponent extends Component {
     const midnight = new Date();
     midnight.setHours(23, 59, 59, 0);
 
-    const num_tag = this.props.cookies.get("num_tag");
-    this.setState({ num_tag: parseInt(num_tag) + 7 });
+    let num_tag = this.props.cookies.get("num_tag");
+    if (num_tag) {
+      num_tag = parseInt(num_tag) + 7;
+    } else {
+      num_tag = 7;
+    }
+
+    this.setState({ num_tag });
 
     const { api_url, token } = this.state;
     const res = await axios.get(`${api_url}/users/${token}/`);

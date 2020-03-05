@@ -53,7 +53,13 @@ class ReadingCompleteComponent extends Component {
       total_time_read,
       untagged_cnt
     } = this.state;
-    const num_tag = parseInt(this.props.cookies.get("num_tag")) + 7;
+    // const num_tag = parseInt(this.props.cookies.get("num_tag")) + 7;
+    let num_tag = this.props.cookies.get("num_tag");
+    if (num_tag) {
+      num_tag = parseInt(num_tag) + 7;
+    } else {
+      num_tag = 7;
+    }
 
     return (
       <section className="ht-100">

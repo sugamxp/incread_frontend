@@ -26,7 +26,8 @@ class PrioritizeListComponent extends Component {
       return article;
     });
     localStorage.setItem("articles", JSON.stringify(result));
-    window.open(url, "_self");
+    this.forceUpdate();
+    window.open(url);
   };
 
   onDoneClick = (id, e) => {
@@ -41,9 +42,10 @@ class PrioritizeListComponent extends Component {
         $(`#${id}`).removeClass("text-yellow");
         $(`#${id}`).addClass("text-green");
         $(`#${id}`).html('<i class="fa fa-check mr-10"></i>Done');
-        $(`#green-overlay${id}`).show(1500);
-        console.log(result);
 
+        setTimeout(() => {
+          $(`#green-overlay${id}`).fadeIn("slow");
+        }, 750);
         setTimeout(() => {
           if (result.length === 0) {
             localStorage.removeItem("articles");
