@@ -13,8 +13,10 @@ import { getArticlesPocket } from "../../redux/actions/authActions";
 
 class PrioritizeListComponent extends Component {
   componentDidMount() {
+    const api_url = process.env.REACT_APP_API_URL;
     const token = this.props.cookies.get("token");
     this.props.getPrioritizedList(token, this.props);
+    this.props.getArticlesPocket(api_url, token);
   }
 
   navigateToArticle = ([url, id], e) => {
