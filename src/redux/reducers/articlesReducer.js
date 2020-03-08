@@ -2,7 +2,8 @@ import {
   GET_ARTICLES_TO_TAG,
   TAGGING_COMPLETE,
   GET_PRIORITIZED_LIST,
-  REMOVE_ARTICLES
+  REMOVE_ARTICLES,
+  REMOVE_ARTICLES_TO_TAG
 } from "../actions/types";
 
 const initialState = {
@@ -45,6 +46,12 @@ export default function(state = initialState, action) {
       return {
         ...state,
         prioritized_list: []
+      };
+
+    case REMOVE_ARTICLES_TO_TAG:
+      return {
+        ...state,
+        articles_to_tag: []
       };
     default:
       return state;

@@ -16,20 +16,30 @@ class TagArticlesComponent extends Component {
 
     const midnight = new Date();
     midnight.setHours(23, 59, 59, 0);
-
     let num_tag = 7;
-    if (!this.props.cookies.get("num_tag")) {
-      this.props.cookies.set("num_tag", num_tag, {
-        expires: midnight
-      });
+
+    if (!this.props.cookies.get("reload")) {
+      if (!this.props.cookies.get("num_tag")) {
+        console.log("set num_tag cookie");
+
+        this.props.cookies.set("num_tag", num_tag, {
+          expires: midnight
+        });
+      } else {
+        console.log("get num_tag cookie");
+
+        num_tag = this.props.cookies.get("num_tag");
+        this.props.cookies.set("num_tag", parseInt(num_tag) + 7, {
+          expires: midnight
+        });
+        num_tag = parseInt(num_tag) + 7;
+      }
+      console.log(num_tag);
     } else {
       num_tag = this.props.cookies.get("num_tag");
-      this.props.cookies.set("num_tag", parseInt(num_tag) + 7, {
-        expires: midnight
-      });
-      num_tag = parseInt(num_tag) + 7;
     }
 
+    this.props.cookies.set("reload", true);
     this.props.getArticlesToTag(this.state.token, num_tag);
   }
 
@@ -76,7 +86,7 @@ class TagArticlesComponent extends Component {
       });
   };
   render() {
-    console.log("render");
+    console.log("render", this.props.articles.length);
 
     const { articles } = this.props;
     if (articles.length !== 0) {

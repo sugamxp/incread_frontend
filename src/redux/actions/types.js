@@ -4,6 +4,7 @@ export const GET_ARTICLES_TO_TAG = "GET_ARTICLES_TO_TAG";
 export const TAGGING_COMPLETE = "TAGGING_COMPLETE";
 export const GET_PRIORITIZED_LIST = "GET_PRIORITIZED_LIST";
 export const REMOVE_ARTICLES = "REMOVE_ARTICLES";
+export const REMOVE_ARTICLES_TO_TAG = "REMOVE_ARTICLES_TO_TAG";
 
 // $(document).ready(function(){
 

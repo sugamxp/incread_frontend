@@ -4,7 +4,10 @@ import { withRouter } from "react-router-dom";
 import { withCookies } from "react-cookie";
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { taggingComplete } from "../../redux/actions/articlesActions";
+import {
+  taggingComplete,
+  removeArticlesToTag
+} from "../../redux/actions/articlesActions";
 import axios from "axios";
 import { Link } from "react-router-dom";
 class TaggingCompleteComponent extends Component {
@@ -39,6 +42,8 @@ class TaggingCompleteComponent extends Component {
       untagged_articles,
       percentage
     });
+    this.props.cookies.remove("reload");
+    this.props.removeArticlesToTag();
   }
 
   handleTaggingComplete = (data, e) => {
@@ -132,7 +137,7 @@ const mapStateToProps = (state) => ({
 });
 
 export default compose(
-  connect(mapStateToProps, { taggingComplete }),
+  connect(mapStateToProps, { taggingComplete, removeArticlesToTag }),
   withRouter,
   withCookies
 )(TaggingCompleteComponent);

@@ -2,7 +2,8 @@ import {
   GET_ARTICLES_TO_TAG,
   TAGGING_COMPLETE,
   GET_PRIORITIZED_LIST,
-  REMOVE_ARTICLES
+  REMOVE_ARTICLES,
+  REMOVE_ARTICLES_TO_TAG
 } from "./types";
 import axios from "axios";
 
@@ -61,5 +62,11 @@ export const getPrioritizedList = (token, props) => async (dispatch) => {
 export const removeArticles = () => async (dispatch) => {
   dispatch({
     type: REMOVE_ARTICLES
+  });
+};
+
+export const removeArticlesToTag = () => async (dispatch) => {
+  dispatch({
+    type: REMOVE_ARTICLES_TO_TAG
   });
 };
